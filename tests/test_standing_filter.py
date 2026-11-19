@@ -43,6 +43,14 @@ class StandingFilterTests(unittest.TestCase):
         kept = StandingFilter().filter(make_detections(), xy, scores)
         self.assertEqual(len(kept), 0)
 
+    def test_keep_mask_preserves_detection_indexes_for_tracking(self):
+        xy, scores = make_keypoints(100.0, 130.0, 135.0, count=2)
+        xy[1, 5, 1] = xy[1, 6, 1] = 100.0
+        xy[1, 11, 1] = xy[1, 12, 1] = 130.0
+        xy[1, 13, 1] = xy[1, 14, 1] = 180.0
+        mask = StandingFilter().keep_mask(make_detections(count=2), xy, scores)
+        np.testing.assert_array_equal(mask, np.array([True, False]))
+
     def test_missing_pose_data_is_unclassified(self):
         kept_default = StandingFilter().filter(make_detections(), None, None)
         self.assertEqual(len(kept_default), 1)  # keep_unclassified=True

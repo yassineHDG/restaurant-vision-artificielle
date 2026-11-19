@@ -1,0 +1,37 @@
+{
+  "restaurant_id": "simulated-restaurant",
+  "timezone": "Africa/Casablanca",
+  "opens_at": "10:00",
+  "closes_at": "22:00",
+  "tables": [
+    {"table_id": "T-01", "capacity": 4},
+    {"table_id": "T-02", "capacity": 4},
+    {"table_id": "T-03", "capacity": 4},
+    {"table_id": "T-04", "capacity": 4},
+    {"table_id": "T-05", "capacity": 4},
+    {"table_id": "T-06", "capacity": 4}
+  ],
+  "arrival_bands": [
+    {"start": "10:00", "end": "12:00", "parties_per_hour": 4},
+    {"start": "12:00", "end": "14:00", "parties_per_hour": 18},
+    {"start": "14:00", "end": "18:00", "parties_per_hour": 5},
+    {"start": "18:00", "end": "21:00", "parties_per_hour": 10},
+    {"start": "21:00", "end": "22:00", "parties_per_hour": 4}
+  ],
+  "party_size_weights": [0.12, 0.44, 0.18, 0.26],
+  "servers": 2,
+  "cleaners": 1,
+  "service_minutes_mean": 4,
+  "meal_minutes_median": 40,
+  "meal_minutes_per_extra_guest": 3,
+  "meal_log_sigma": 0.3,
+  "cleaning_minutes_median": 4,
+  "cleaning_log_sigma": 0.25,
+  "patience_minutes_median": 25,
+  "patience_log_sigma": 0.35,
+  "day_log_sigma": 0.2,
+  "weekend_arrival_multiplier": 1.2,
+  "service_alert_minutes": 5,
+  "snapshot_minutes": 5,
+  "bucket_minutes": 15
+}

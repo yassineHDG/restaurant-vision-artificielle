@@ -5,13 +5,36 @@ description = "Restaurant table-occupancy analysis of recorded video: YOLO26 pos
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.151.0",
+    "lap>=0.5.13",
     "numpy>=2.4.6",
     "opencv-python>=5.0.0.93",
     "pydantic-settings>=2.16.0",
     "supervision>=0.31.0",
+    "torch==2.14.1",
+    "torchvision==0.29.1",
+    "tzdata>=2025.2; sys_platform == 'win32'",
     "ultralytics>=8.4.183",
     "uvicorn>=0.54.0",
+    "yt-dlp>=2026.10.26",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
 ]
 
 [tool.uv]
 package = false
+
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cu130", marker = "sys_platform == 'win32' or sys_platform == 'linux'" },
+]
+torchvision = [
+    { index = "pytorch-cu130", marker = "sys_platform == 'win32' or sys_platform == 'linux'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true

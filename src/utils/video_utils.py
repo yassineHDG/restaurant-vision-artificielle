@@ -14,8 +14,11 @@ def resize_frame(frame, width=640):
     return cv2.resize(frame, (width, new_height))
 
 
-def encode_frame(frame):
-    success, buffer = cv2.imencode(".jpg", frame)
+def encode_frame(frame, quality=95):
+    quality = max(70, min(100, int(quality)))
+    success, buffer = cv2.imencode(
+        ".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, quality]
+    )
 
     if not success:
         return None

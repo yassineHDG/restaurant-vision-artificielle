@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "queue_alert_people": 8,
+  "max_queue_wait_seconds": 600.0,
+  "service_alert_seconds": 300.0,
+  "cleaning_alert_seconds": 180.0,
+  "default_dining_minutes": 10.0,
+  "queue_group_join_seconds": 3.0,
+  "queue_group_exit_grace_seconds": 2.0,
+  "history_sample_seconds": 5.0,
+  "camera_reconnect_attempts": 5,
+  "camera_reconnect_delay_seconds": 2.0,
+  "stream_stale_seconds": 6.0,
+  "stream_jpeg_quality": 95
+}

@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "reviewed_at": "2026-11-02",
+  "policy": "Download selected research assets only after user preview and license review. Compute SHA-256 immediately after download.",
+  "datasets": [
+    {
+      "id": "caviar",
+      "name": "CAVIAR Test Case Scenarios",
+      "homepage": "https://homepages.inf.ed.ac.uk/rbf/CAVIARDATA1/",
+      "license": "Public data under Creative Commons BY-SA according to the official page; CAVIAR project acknowledgement is required.",
+      "format": "MPEG-2, 384x288, 25 FPS, with XML ground truth",
+      "purpose": ["entrance_exit", "waiting", "staff_customer_scenario", "tracking"],
+      "preview_urls": [
+        "https://homepages.inf.ed.ac.uk/rbf/CAVIARDATA1/head_hands_image.jpg"
+      ],
+      "selected_assets": [
+        {
+          "name": "ShopAssistant1front.mpg",
+          "url": "https://homepages.inf.ed.ac.uk/rbf/CAVIARDATA2/ShopAssistant1front/ShopAssistant1front.mpg",
+          "expected_bytes": 9684086,
+          "sha256": null,
+          "checksum_status": "pending_download"
+        },
+        {
+          "name": "OneShopOneWait2front.mpg",
+          "url": "https://homepages.inf.ed.ac.uk/rbf/CAVIARDATA2/OneShopOneWait2front/OneShopOneWait2front.mpg",
+          "expected_bytes": 8463276,
+          "sha256": null,
+          "checksum_status": "pending_download"
+        },
+        {
+          "name": "EnterExitCrossingPaths1front.mpg",
+          "url": "https://homepages.inf.ed.ac.uk/rbf/CAVIARDATA2/EnterExitCrossingPaths1front/EnterExitCrossingPaths1front.mpg",
+          "expected_bytes": 2260632,
+          "sha256": null,
+          "checksum_status": "pending_download"
+        }
+      ],
+      "selected_total_bytes": 20407994,
+      "download_status": "awaiting_preview_approval"
+    },
+    {
+      "id": "collective_activity",
+      "name": "Collective Activity Dataset",
+      "homepage": "https://cvgl.stanford.edu/projects/collective/collectiveActivity.html",
+      "license": "Terms are not stated on the official download page; confirm academic-use permission before download or redistribution.",
+      "format": "44 short sequences; every 10th frame annotated with person box, activity and pose direction",
+      "purpose": ["waiting", "queueing", "group_activity"],
+      "preview_urls": [
+        "https://cvgl.stanford.edu/projects/collective/images/exwait.jpg",
+        "https://cvgl.stanford.edu/projects/collective/images/exqueue.jpg"
+      ],
+      "selected_assets": [
+        {
+          "name": "ActivityDataset.zip",
+          "url": "https://cvgl.stanford.edu/data/ActivityDataset.zip",
+          "expected_bytes": null,
+          "sha256": null,
+          "checksum_status": "pending_download",
+          "size_status": "official server did not answer HEAD within 20 seconds"
+        }
+      ],
+      "download_status": "awaiting_license_and_preview_approval"
+    },
+    {
+      "id": "mall",
+      "name": "Mall Crowd Counting Dataset",
+      "homepage": "https://personal.ie.cuhk.edu.hk/~ccloy/downloads_mall_dataset.html",
+      "license": "Research use only; commercial use is prohibited by the official dataset page.",
+      "format": "2000 JPEG frames, 640x480, under 2 Hz, more than 60,000 head annotations",
+      "purpose": ["crowd_counting", "occlusion", "external_validation"],
+      "preview_urls": [
+        "https://personal.ie.cuhk.edu.hk/~ccloy/images/shopping_mall.jpg",
+        "https://personal.ie.cuhk.edu.hk/~ccloy/images/shopping_mall_annotated.jpg"
+      ],
+      "selected_assets": [
+        {
+          "name": "mall_dataset.zip",
+          "url": "https://personal.ie.cuhk.edu.hk/~ccloy/files/datasets/mall_dataset.zip",
+          "expected_bytes": 91833998,
+          "sha256": null,
+          "checksum_status": "pending_download"
+        }
+      ],
+      "download_status": "awaiting_preview_approval"
+    }
+  ]
+}

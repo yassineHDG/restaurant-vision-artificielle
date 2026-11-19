@@ -2,8 +2,9 @@
 
 # Upstream demo clip; it is downloaded under the project's own filename.
 VIDEO_URL := https://cvzone-storage.sfo3.cdn.digitaloceanspaces.com/courses/restaurat-analysis/videos/Cctv-Resturant-Demo.mp4
+MODEL_URL := https://github.com/ultralytics/assets/releases/download/v8.4.0/yolo26n-pose.pt
 
-.PHONY: help install run test download-video
+.PHONY: help install run test download-video download-model
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
@@ -15,8 +16,12 @@ run: ## Run the project
 	uv run python src/main.py
 
 test: ## Run the tests
-	uv run python -m unittest discover -s tests -v
+	uv run python -m pytest -q
 
 download-video: ## Download the demo video (videos/restaurant-demo.mp4)
 	mkdir -p videos
 	wget -O videos/restaurant-demo.mp4 "$(VIDEO_URL)"
+
+download-model: ## Download YOLO26 nano pose weights
+	mkdir -p models
+	wget -O models/yolo26n-pose.pt "$(MODEL_URL)"

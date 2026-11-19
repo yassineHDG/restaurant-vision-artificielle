@@ -1,0 +1,49 @@
+.calibration-page { max-width: 1500px; margin: 0 auto; padding: 28px; }
+.calibration-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; margin-bottom: 20px; }
+.calibration-header h1 { margin: 0; font-size: 31px; letter-spacing: -.035em; }
+.calibration-header p:last-child { color: var(--muted); }
+.back-link { color: var(--accent); font-weight: 700; text-decoration: none; }
+.calibration-grid { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 16px; }
+.drawing-stage { position: relative; margin: 16px; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 7px; background: #0d1414; }
+.drawing-stage img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.drawing-stage svg { position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair; }
+.zone-shape { fill: rgba(15, 118, 110, .2); stroke: #2dd4bf; stroke-width: 3; vector-effect: non-scaling-stroke; }
+.zone-shape.transit_polygon { fill: rgba(154, 103, 0, .16); stroke: #d29b27; }
+.zone-shape.interior_polygon { fill: rgba(90, 70, 160, .16); stroke: #8f7bd8; }
+.zone-point { fill: #fff; stroke: #0f766e; stroke-width: 2; vector-effect: non-scaling-stroke; }
+.control-body { display: grid; gap: 14px; padding: 17px; }
+.control-body label, .control-body fieldset { display: grid; gap: 7px; border: 0; padding: 0; margin: 0; color: var(--muted); font-size: 11px; }
+.control-body select, .control-body input, .control-body button { min-height: 38px; padding: 7px 10px; border: 1px solid var(--border-strong); border-radius: 6px; background: #fff; color: var(--text); cursor: pointer; }
+.control-body fieldset { grid-template-columns: 1fr 1fr; }
+.control-body legend { grid-column: 1 / -1; margin-bottom: 6px; }
+.zone-button.is-active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.control-body #staff-controls { grid-template-columns: 1fr; padding: 12px; border: 1px solid var(--border); border-radius: 7px; background: var(--surface-soft); }
+.staff-sample-row { display: grid; grid-template-columns: 34px 1fr; gap: 8px; align-items: center; }
+#staff-swatch { display: block; width: 34px; height: 34px; border: 1px solid var(--border-strong); border-radius: 5px; background: #0f766e; }
+.staff-hsv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.control-body #sample-staff-color.is-active { border-color: var(--warning); color: var(--warning); background: #fff5dd; }
+#staff-controls p { color: var(--muted); font-size: 10px; }
+.table-zone-button.is-active { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.zone-shape.table_counting { fill: rgba(45, 212, 191, .10); stroke: #14b8a6; stroke-dasharray: 8 6; }
+.zone-shape.table_display { fill: rgba(59, 130, 246, .18); stroke: #60a5fa; }
+.zone-shape.table_counting:not(.is-selected), .zone-shape.table_display:not(.is-selected) { opacity: .55; }
+.zone-shape.table-state-free { fill: rgba(113, 130, 127, .14); stroke: #71827f; }
+.zone-shape.table-state-ready { fill: rgba(22, 130, 93, .18); stroke: #22a06b; }
+.zone-shape.table-state-occupied { fill: rgba(191, 74, 70, .2); stroke: #e0625e; }
+.zone-shape.table-state-needs_cleaning { fill: rgba(211, 146, 20, .2); stroke: #e2a52d; }
+.table-state-legend { display: flex; flex-wrap: wrap; gap: 5px; }
+.table-state-legend span { padding: 4px 7px; border-radius: 4px; font-size: 9px; font-weight: 700; }
+.legend-free { color: #3f5754; background: #edf1f0; }
+.legend-ready { color: #0f7552; background: #e8f4ee; }
+.legend-occupied { color: #9f3532; background: #faeceb; }
+.legend-cleaning { color: #855c05; background: #fff4d8; }
+#dining-controls { display: grid; gap: 12px; }
+#table-zone-controls { grid-template-columns: 1fr 1fr; }
+#dining-controls[hidden] { display: none; }
+#entrance-controls[hidden] { display: none; }
+.control-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.control-body .save-button { border-color: var(--accent); color: #fff; background: var(--accent); font-weight: 700; }
+.control-body .danger-button { border-color: #dc7777; color: #a92f2f; background: #fff7f7; font-weight: 700; }
+.calibration-help, #save-message, .control-body p { margin: 0; color: var(--muted); font-size: 11px; }
+.command { display: block; padding: 9px; overflow-wrap: anywhere; border-radius: 5px; background: #162120; color: #dce7e5; font-size: 10px; }
+@media (max-width: 900px) { .calibration-grid { grid-template-columns: 1fr; } }

@@ -115,6 +115,24 @@ class BackgroundProcessingTests(unittest.TestCase):
         self._join_worker()  # no client ever connected
         self.assertEqual(len(fake.calls), 5)
 
+    def test_status_snapshot_exposes_live_table_metrics(self):
+        fake = FakeProcessor()
+        vp.start_processing(fake)
+        self._join_worker()
+
+        status = vp.get_processing_status()
+        self.assertEqual(status["state"], "completed")
+        self.assertTrue(status["processing_done"])
+        self.assertEqual(status["total_tables"], 1)
+        self.assertEqual(status["available_tables"], 1)
+        self.assertEqual(status["occupied_tables"], 0)
+        self.assertEqual(status["total_capacity"], 4)
+        self.assertEqual(status["tables"][0]["id"], "T-01")
+
+        # API callers receive a deep copy and cannot mutate shared state.
+        status["tables"][0]["id"] = "changed"
+        self.assertEqual(vp.get_processing_status()["tables"][0]["id"], "T-01")
+
     def test_end_of_processing_reports_last_video_time(self):
         fake = FakeProcessor()
         vp.start_processing(fake)

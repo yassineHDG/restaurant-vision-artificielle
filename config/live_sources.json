@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "authorization_note": "User reports explicit YouTube permission for this computer-vision project.",
+  "sources": [
+    {
+      "id": "storefront",
+      "url": "https://www.youtube.com/watch?v=-J49AAW3Wik",
+      "label": "Frozen Yogurt storefront",
+      "purpose": "dining_live_and_empty_table_candidates",
+      "authorized": true
+    },
+    {
+      "id": "patio",
+      "url": "https://www.youtube.com/watch?v=bM0GplM_vPY",
+      "label": "Fort Lauderdale patio",
+      "purpose": "dining_role_candidates",
+      "authorized": true
+    },
+    {
+      "id": "dublin",
+      "url": "https://www.youtube.com/watch?v=3nyPER2kzqk",
+      "label": "Dublin street camera",
+      "purpose": "passerby_negative_candidates",
+      "authorized": true
+    }
+  ]
+}

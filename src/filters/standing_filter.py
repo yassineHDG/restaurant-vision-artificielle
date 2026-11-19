@@ -64,13 +64,26 @@ class StandingFilter:
         Either may be None when pose data is unavailable; every person is then
         treated as unclassified.
         """
+        return detections[self.keep_mask(detections, keypoints_xy, keypoint_conf)]
+
+    def keep_mask(
+        self,
+        detections: sv.Detections,
+        keypoints_xy: np.ndarray | None,
+        keypoint_conf: np.ndarray | None = None,
+    ) -> np.ndarray:
+        """Return a Boolean mask aligned with the original detections.
+
+        Keeping the original indexes is required by the per-camera tracker:
+        ByteTrack reports the source detection index, which is then associated
+        with exactly one calibrated table.
+        """
         count = len(detections)
         keypoints_xy = self._as_numpy(keypoints_xy)
         keypoint_conf = self._as_numpy(keypoint_conf)
 
         if keypoints_xy is None:
-            keep = np.full(count, self.keep_unclassified, dtype=bool)
-            return detections[keep]
+            return np.full(count, self.keep_unclassified, dtype=bool)
 
         if len(keypoints_xy) != count:
             raise ValueError(
@@ -90,7 +103,7 @@ class StandingFilter:
             )
             keep[i] = self.keep_unclassified if seated is None else seated
 
-        return detections[keep]
+        return keep
 
     def _is_seated(
         self,

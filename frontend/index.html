@@ -1,41 +1,178 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Restaurant Analysis</title>
+  <title>Restaurant Vision — Supervision</title>
   <link rel="stylesheet" href="/static/style.css">
   <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <span class="brand-mark" aria-hidden="true">
-        <img src="/static/favicon.svg" width="22" height="22" alt="">
-      </span>
-      <div class="brand-text">
-        <h1>Restaurant Analysis</h1>
-        <p>Seated-guest counting &amp; table occupancy</p>
-      </div>
-    </div>
-  </header>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#supervision" aria-label="Restaurant Vision, accueil">
+        <span class="brand-mark" aria-hidden="true"><img src="/static/favicon.svg" width="22" height="22" alt=""></span>
+        <span><strong>Restaurant Vision</strong><small>Centre d’opérations</small></span>
+      </a>
 
-  <main class="page">
-    <section class="card">
-      <header class="card-head">
-        <h2>Processed video</h2>
-        <p class="card-meta">processed stream · detection and table overlays</p>
-      </header>
-      <div class="video-frame">
-        <img id="stream" alt="Processed video with detection and table overlays" decoding="async">
-        <div class="video-overlay" id="video-overlay">
-          <div class="spinner" aria-hidden="true"></div>
-          <p id="video-overlay-text">Connecting to the processed video…</p>
+      <nav class="nav" aria-label="Navigation principale">
+        <a class="nav-link is-active" href="#supervision"><span aria-hidden="true">◉</span> Supervision</a>
+        <a class="nav-link" href="#queue"><span aria-hidden="true">↳</span> File d’attente <em>LIVE</em></a>
+        <a class="nav-link" href="#forecast"><span aria-hidden="true">⌁</span> Prévisions ML <em>P4</em></a>
+        <a class="nav-link" href="/calibration"><span aria-hidden="true">⌖</span> Calibration</a>
+      </nav>
+
+      <div class="sidebar-foot">
+        <div class="connection"><span class="status-dot" id="connection-dot"></span><span id="connection-label">Connexion…</span></div>
+        <time id="live-clock" datetime="">--:--:--</time>
+      </div>
+    </aside>
+
+    <main class="workspace" id="supervision">
+      <header class="page-header">
+        <div>
+          <p class="eyebrow">Analyse vidéo en direct</p>
+          <h1>Supervision du restaurant</h1>
+          <p>Occupation des tables observée par le modèle de vision.</p>
         </div>
-      </div>
-    </section>
-  </main>
+        <div class="header-chips">
+          <div class="source-chip"><span class="pulse" aria-hidden="true"></span><span id="source-label">Source vidéo</span></div>
+          <div class="source-chip"><span aria-hidden="true">GPU</span><span id="gpu-label">Vérification…</span></div>
+          <button class="settings-button" id="settings-button" type="button">Seuils & alertes</button>
+        </div>
+      </header>
 
+      <section class="metric-strip" aria-label="Indicateurs principaux">
+        <article class="metric"><span>Clients assis</span><strong id="metric-guests">—</strong><small id="metric-capacity">sur — places</small></article>
+        <article class="metric"><span>Taux d’occupation</span><strong id="metric-occupancy-rate">—</strong><small id="metric-tables-detail">— table</small></article>
+        <article class="metric"><span>File d’attente</span><strong id="metric-queue">—</strong><small id="metric-queue-detail">caméra d’entrée</small></article>
+        <article class="metric"><span>Attente moyenne / groupe</span><strong id="metric-average-wait">—</strong><small>groupes confirmés</small></article>
+        <article class="metric"><span>Staff visible</span><strong id="metric-staff">—</strong><small>salle + entrée</small></article>
+        <article class="metric"><span>Attente estimée</span><strong id="metric-estimated-wait">—</strong><small>nouveaux arrivants</small></article>
+      </section>
+
+      <div class="operations-grid">
+        <section class="panel video-panel">
+          <div class="panel-head">
+            <div><p class="section-label">Caméra principale</p><h2>Flux traité</h2></div>
+            <span class="live-badge" id="processing-badge">Initialisation</span>
+          </div>
+          <div class="video-frame">
+            <img id="stream" alt="Vidéo du restaurant avec détections et zones de tables" decoding="async">
+            <button class="video-fullscreen-button" id="video-fullscreen" type="button" aria-label="Afficher la vidéo en plein écran" title="Plein écran (Échap pour quitter)">
+              <span aria-hidden="true">⛶</span><span>Plein écran</span>
+            </button>
+            <div class="video-overlay" id="video-overlay">
+              <div class="spinner" aria-hidden="true"></div>
+              <p id="video-overlay-text">Connexion au flux vidéo traité…</p>
+            </div>
+          </div>
+          <div class="video-foot"><span>Les cadres et zones sont produits par le pipeline de vision.</span><span id="video-time">00:00</span></div>
+        </section>
+
+        <section class="panel table-panel" aria-labelledby="tables-heading">
+          <div class="panel-head">
+            <div><p class="section-label">Salle</p><h2 id="tables-heading">État des tables</h2></div>
+            <span class="count-badge" id="table-count-badge">0 table</span>
+          </div>
+          <div class="table-head" aria-hidden="true"><span>Table</span><span>Clients</span><span>Durée</span><span>Libération</span><span>État / action</span></div>
+          <div class="table-list" id="table-list" aria-live="polite"><p class="empty-state">En attente des premières données…</p></div>
+        </section>
+      </div>
+
+      <section class="operations-band" aria-label="Opérations en temps réel">
+        <section class="panel alerts-panel">
+          <div class="panel-head">
+            <div><p class="section-label">Temps réel</p><h2>Alertes opérationnelles</h2></div>
+            <span class="alert-count" id="alert-count">0 active</span>
+          </div>
+          <div class="alerts-list" id="alerts-list" aria-live="polite"><p class="empty-state">Aucune alerte active.</p></div>
+        </section>
+        <section class="panel operations-summary-panel">
+          <div class="panel-head"><div><p class="section-label">Décision</p><h2>Capacité & caméras</h2></div><span class="live-badge" id="camera-health-badge">Vérification</span></div>
+          <dl class="operations-summary">
+            <div><dt>Tables prêtes / libres</dt><dd id="ops-ready-tables">—</dd></div>
+            <div><dt>Tables à nettoyer</dt><dd id="ops-cleaning-tables">—</dd></div>
+            <div><dt>Groupes dans la file</dt><dd id="ops-queue-groups">—</dd></div>
+            <div><dt>Prochaine libération</dt><dd id="ops-next-release">—</dd></div>
+          </dl>
+          <div class="camera-health-list" id="camera-health-list"></div>
+        </section>
+      </section>
+
+      <section class="panel history-panel" id="history">
+        <div class="panel-head history-head">
+          <div><p class="section-label">Historique</p><h2>Occupation, attente et rotation</h2></div>
+          <div class="history-actions">
+            <label>Période<select id="history-range"><option value="24">24 h</option><option value="168">7 jours</option><option value="720">30 jours</option></select></label>
+            <a class="export-button" id="export-stats" href="/api/operations/export.csv">Exporter CSV</a>
+          </div>
+        </div>
+        <div class="history-layout">
+          <div class="chart-wrap"><canvas id="history-chart" width="960" height="300" aria-label="Courbe du taux d’occupation par heure"></canvas><p id="history-empty" class="empty-state">L’historique apparaîtra après les premiers échantillons.</p></div>
+          <div>
+            <h3>Rotation par table</h3>
+            <div class="turnover-list" id="turnover-list"></div>
+            <h3 class="peak-heading">Pics & staff conseillé</h3>
+            <div class="peak-list" id="peak-list"></div>
+            <p class="heuristic-note">Conseil indicatif fondé sur l’occupation, la file et le staff observé — à valider par le responsable.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="phase-grid" aria-label="Prochaines phases du projet">
+        <article class="panel phase-panel queue-live-panel" id="queue">
+          <div class="panel-head">
+            <div><p class="section-label">Phase 2</p><h2>File d’attente</h2></div>
+            <span class="live-badge" id="queue-badge">Initialisation</span>
+          </div>
+          <div class="phase-content">
+            <div class="entrance-video">
+              <img id="entrance-stream" alt="Caméra d’entrée avec suivi de la file">
+              <div class="entrance-placeholder" id="entrance-placeholder">Ajoutez <code>ENTRANCE_VIDEO_PATH</code> puis calibrez les zones.</div>
+            </div>
+            <div>
+              <h3 id="queue-title">Caméra d’entrée</h3>
+              <p id="queue-summary">En attente de la seconde vidéo.</p>
+              <div class="queue-counts"><span><strong id="queue-confirmed">0</strong> confirmés</span><span><strong id="queue-uncertain">0</strong> incertains</span><span><strong id="queue-staff">0</strong> staff</span><span><strong id="queue-estimated-wait">—</strong> attente estimée</span></div>
+              <div class="queue-tracks" id="queue-tracks"></div>
+              <a class="deliverable" href="/calibration">Configurer les zones →</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel phase-panel" id="forecast">
+          <div class="panel-head">
+            <div><p class="section-label">Phase 4</p><h2>Prévisions d’affluence</h2></div>
+            <span class="planned-badge">Planifié</span>
+          </div>
+          <div class="phase-content forecast-content">
+            <div class="forecast-bars" aria-hidden="true"><i style="--h:35%"></i><i style="--h:52%"></i><i style="--h:78%"></i><i style="--h:62%"></i><i style="--h:44%"></i></div>
+            <div><h3>Modèles à entraîner</h3><p>Les données vidéo et simulées serviront à comparer plusieurs modèles sans afficher de fausses prédictions aujourd’hui.</p><span class="deliverable">Livrable : affluence + tables bientôt libres</span></div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <dialog class="settings-dialog" id="settings-dialog">
+    <form method="dialog" id="settings-form">
+      <div class="settings-dialog-head"><div><p class="section-label">Configuration</p><h2>Seuils opérationnels</h2></div><button class="dialog-close" id="settings-close" type="button" aria-label="Fermer">×</button></div>
+      <p class="settings-intro">Ces valeurs sont enregistrées dans le projet. Les seuils d’alerte s’appliquent immédiatement.</p>
+      <div class="settings-grid">
+        <label>File maximale (personnes)<input name="queue_alert_people" type="number" min="1" max="100" required></label>
+        <label>Attente maximale (secondes)<input name="max_queue_wait_seconds" type="number" min="10" required></label>
+        <label>Service attendu après (secondes)<input name="service_alert_seconds" type="number" min="10" required></label>
+        <label>Nettoyage en retard après (secondes)<input name="cleaning_alert_seconds" type="number" min="0" required></label>
+        <label>Durée moyenne d’un repas (minutes)<input name="default_dining_minutes" type="number" min="5" max="240" required></label>
+        <label>Fenêtre d’un groupe (secondes)<input name="queue_group_join_seconds" type="number" min="0" max="30" step="0.5" required></label>
+        <label>Tentatives de reconnexion caméra<input name="camera_reconnect_attempts" type="number" min="0" max="100" required></label>
+        <label>Qualité du flux plein écran<input name="stream_jpeg_quality" type="number" min="70" max="100" required></label>
+      </div>
+      <p class="settings-message" id="settings-message" role="status"></p>
+      <div class="dialog-actions"><button id="settings-cancel" type="button">Annuler</button><button class="save-settings" id="save-settings" type="submit">Enregistrer</button></div>
+    </form>
+  </dialog>
   <script src="/static/app.js"></script>
 </body>
 </html>

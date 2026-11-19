@@ -77,6 +77,35 @@ class RegionTests(unittest.TestCase):
 
         self.assertIsNotNone(processor.zones[0]["annotator"])
 
+    def test_normalized_camera_tables_scale_on_first_frame(self):
+        camera = {
+            "regions": {
+                "tables": [
+                    {
+                        "id": "T-01",
+                        "capacity": 4,
+                        "counting_polygon": [[0, 0], [0.5, 0], [0.5, 0.5]],
+                        "display_polygon": [[0, 0], [0.5, 0], [0.5, 0.5]],
+                    }
+                ]
+            }
+        }
+        with patch("services.video_processor.YOLO"):
+            processor = VideoProcessor(camera_config=camera)
+        self.assertEqual(processor.zones, [])
+        detections = sv.Detections(
+            xyxy=np.empty((0, 4), dtype=np.float32),
+            class_id=np.empty((0,), dtype=int),
+        )
+        frame = np.zeros((100, 200, 3), dtype=np.uint8)
+        result = SimpleNamespace(keypoints=None, boxes=None)
+        with patch.object(sv.Detections, "from_ultralytics", return_value=detections):
+            processor.process_result(frame, result, 0.0)
+        np.testing.assert_array_equal(
+            processor.zones[0]["counting_zone"].polygon,
+            np.array([[0, 0], [100, 0], [100, 50]]),
+        )
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

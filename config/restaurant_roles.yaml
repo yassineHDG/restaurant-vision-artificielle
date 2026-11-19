@@ -1,0 +1,8 @@
+path: C:\Users\elhou\OneDrive\Documents\ChatGPT\vision artificielle\Restaurant-Analysis\data\training\restaurant_roles_v2
+train: images/train
+val: images/val
+test: images/test
+names:
+  0: customer_seated
+  1: customer_standing
+  2: staff

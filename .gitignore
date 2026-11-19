@@ -6,8 +6,10 @@ venv/
 
 # Environment
 .env
+config/calibration_draft.json
 
 # Media and model weights
+*.pt
 videos/*
 !videos/.gitkeep
 !videos/output/
@@ -16,9 +18,15 @@ videos/output/*
 models/*
 !models/.gitkeep
 
-# Runtime database
-data/
+# Runtime database and reproducible dataset metadata
+data/*
 !data/.gitkeep
+!data/datasets/
+data/datasets/*
+!data/datasets/manifest.json
+!data/benchmarks/
+data/benchmarks/*
+!data/benchmarks/.gitkeep
 
 # Test and tooling caches
 .pytest_cache/
@@ -26,6 +34,7 @@ data/
 .ruff_cache/
 .coverage
 htmlcov/
+runs/
 
 # IDE and OS files
 .vscode/
